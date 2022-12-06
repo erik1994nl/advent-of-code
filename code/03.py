@@ -1,7 +1,4 @@
-from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Tuple
-from typing_extensions import Literal
 
 backpacks_file_path = f"{Path(__file__).parent.parent}\\data\\03_backpacks.txt"
 
