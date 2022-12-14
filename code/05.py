@@ -9,6 +9,16 @@ def read_crate_input(inp: list):
     moves = inp[stacks_end_idx + 1:]
 
     # parse stacks
+    first = True
+    stack_dict = {}
+    for stack_row in reversed(stacks_inp):
+        if first:
+            first = False
+            stack_dict = {int(el): [] for el in stack_row[1::4]}
+            continue
+        for idx, crate in enumerate(stack_row[1::4]):
+            if crate != ' ':
+                stack_dict[idx + 1].append(crate)
 
     # parse moves
     def split_moves(m: str):
@@ -18,7 +28,15 @@ def read_crate_input(inp: list):
         split_moves(move) for move in moves
     ]
 
-    return [None, move_details]
+    return [stack_dict, move_details]
+
+
+def perform_instructions(_stacks: dict[int, list[str]], _instr: list[tuple[int, int, int]]) -> None:
+    for amt, _from, _to in _instr:
+        for mov in range(amt):
+            c = _stacks.get(_from).pop()
+            _stacks.get(_to).append(c)
+    return None
 
 
 with open(crates_file_path, 'r') as f:
@@ -26,7 +44,8 @@ with open(crates_file_path, 'r') as f:
 
     # Part one
     stacks, instructions = read_crate_input(crate_input)
-    top_crates = ''
+    perform_instructions(stacks, instructions)
+    top_crates = ''.join([stack_crates[-1] for stack_crates in stacks.values()])
 
     print(f"Top crates of each stack: {top_crates}")
 
