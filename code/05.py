@@ -39,6 +39,17 @@ def perform_instructions(_stacks: dict[int, list[str]], _instr: list[tuple[int, 
     return None
 
 
+def perform_instructions_part_2(_stacks: dict[int, list[str]], _instr: list[tuple[int, int, int]]) -> None:
+    for amt, _from, _to in _instr:
+        crates_to_move = _stacks.get(_from)[-amt:]
+        # Remove from old stack
+        _stacks[_from] = _stacks.get(_from)[:-amt]
+        # Add to new stack
+        _stacks.get(_to).extend(crates_to_move)
+
+    return None
+
+
 with open(crates_file_path, 'r') as f:
     crate_input = f.read().splitlines()
 
@@ -50,3 +61,8 @@ with open(crates_file_path, 'r') as f:
     print(f"Top crates of each stack: {top_crates}")
 
     # Part two
+    stacks, instructions = read_crate_input(crate_input)
+    perform_instructions_part_2(stacks, instructions)
+    top_crates = ''.join([stack_crates[-1] for stack_crates in stacks.values()])
+
+    print(f"Top crates of each stack part 2: {top_crates}")
