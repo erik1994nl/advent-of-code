@@ -6,13 +6,14 @@ input_signal_file = f"{Path(__file__).parent.parent}\\data\\06_tuning_trouble.tx
 
 def get_start_marker(cache_size: int) -> int:
     cache = deque(input_signal[:cache_size], maxlen=cache_size)
+    sop = -1
     for idx, input_char in enumerate(input_signal[cache_size:], cache_size):
         if len(set(cache)) == cache_size:
-            start_of_packet = idx
+            sop = idx
             break
         else:
             cache.append(input_char)
-    return start_of_packet
+    return sop
 
 
 with open(input_signal_file, 'r') as f:
